@@ -1,19 +1,22 @@
-# JRPG-style Single File Formation Mod for Baldur's Gate 3
+# Single File Formation Mod for Baldur's Gate 3
 
 Makes your companions follow each other in a chain, so that the whole group walks in a single file behind the character you control.
 
-## General Notes
+The default triangle formation causes party members to bunch up and clip into each other when moving through tight spaces or while waiting to climb.
+
+## Notes
 
 - Intended for single-player only. In multiplayer, non-host players will not be able to control their characters.
 - Party members who are in turn-based mode, in combat, in cutscene dialogue, in camp, downed, dead or ungrouped are automatically removed from the chain; otherwise, they are added.
 - Does not affect attached followers; they retain their default behaviour.
 - No particular order is enforced. The game naturally orders them by the time they join the party.
+- Works fine with party sizes larger than 4.
 
 ## Risks
 
-I've tested this mod with a new game and played through Act 1 without any problems. However, this mod is still in BETA and has not been widely battle-tested by the general public.
+I've tested this mod with a new game and played through Act 1 without any problems. However, this mod has not been battle-tested by the general public.
 
-At its core, this mod uses the `Osi.Follow` and `Osi.StopFollow` functions to enable following. While these functions sound benign, mismanagement of them could result in side effects such as being unable to move freely, take any actions or be downed or die despite reaching 0 HP.
+At its core, this mod uses `Osi.Follow` and `Osi.StopFollow` to manage following. While these functions sound benign, they are  fragile and were observed to produce severe side effects when mismanaged, such as: preventing characters from moving freely or taking actions, stopping them from being downed or dying even after reaching 0 HP and muting voice lines during dialogue cutscenes. These effects can become baked into save files.
 
 ## Requirements
 
