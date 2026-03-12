@@ -26,6 +26,8 @@ local function refreshChain()
 
     Ext.OnNextTick(function()
         local ok, err = pcall(function()
+            local t0 = Ext.Timer.MonotonicTime()
+
             local leaderRows = Osi.DB_Players:Get(Osi.GetHostCharacter())
             local leader = leaderRows and leaderRows[1] and leaderRows[1][1]
             log(leader and ("Leader: " .. leader) or "No leader found.")
@@ -49,6 +51,8 @@ local function refreshChain()
                     log(member .. " not following anyone")
                 end
             end
+
+            log("Took " .. (Ext.Timer.MonotonicTime() - t0) .. "ms")
         end)
 
         if not ok then
