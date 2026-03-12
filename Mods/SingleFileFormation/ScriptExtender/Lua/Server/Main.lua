@@ -1,8 +1,8 @@
-local debug = true
-local queued = false
+local isDebugMode = true
+local isQueued = false
 
 local function log(msg)
-    if debug then
+    if isDebugMode then
         print("[SingleFileFormation] " .. msg)
     end
 end
@@ -21,8 +21,8 @@ local function isChainable(member)
 end
 
 local function refreshChain()
-    if queued then return end
-    queued = true
+    if isQueued then return end
+    isQueued = true
 
     Ext.OnNextTick(function()
         local ok, err = pcall(function()
@@ -58,10 +58,10 @@ local function refreshChain()
         if not ok then
             log("Error: " .. tostring(err))
         else
-            log("Done applying follows.")
+            log("Done")
         end
 
-        queued = false
+        isQueued = false
     end)
 end
 
