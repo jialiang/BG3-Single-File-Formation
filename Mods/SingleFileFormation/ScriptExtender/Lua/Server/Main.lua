@@ -1,7 +1,5 @@
 local debug = true
 local queued = false
-local campState = {}
-local turnBasedState = {}
 
 local function log(msg)
     if debug then
@@ -10,12 +8,14 @@ local function log(msg)
 end
 
 local function isChainable(member)
-    if campState[member] then return false end
-    if turnBasedState[member] then return false end
     if Osi.IsDead(member) == 1 then return false end
     if Osi.HasActiveStatus(member, "DOWNED") == 1 then return false end
+    if Osi.IsInForceTurnBasedMode(member) == 1 then return false end
     if Osi.CombatGetGuidFor(member) ~= nil then return false end
     if Osi.IsSpeakerReserved(member) == 1 then return false end
+
+    local campRows = Osi.DB_PlayerInCamp:Get(member)
+    if (campRows and campRows[1]) then return false end
 
     return true
 end
@@ -75,7 +75,6 @@ Ext.Osiris.RegisterListener("EnteredForceTurnBased", 1, "after", function(charac
     if Osi.IsPlayer(character) ~= 1 then return end
 
     log("EnteredForceTurnBased triggered: " .. character)
-    turnBasedState[character] = true
     refreshChain()
 end)
 
@@ -83,7 +82,6 @@ Ext.Osiris.RegisterListener("LeftForceTurnBased", 1, "after", function(character
     if Osi.IsPlayer(character) ~= 1 then return end
 
     log("LeftForceTurnBased triggered: " .. character)
-    turnBasedState[character] = nil
     refreshChain()
 end)
 
@@ -114,13 +112,11 @@ end)
 
 Ext.Osiris.RegisterListener("TeleportedToCamp", 1, "after", function(character)
     log("TeleportedToCamp triggered: " .. character)
-    campState[character] = true
     refreshChain()
 end)
 
 Ext.Osiris.RegisterListener("TeleportedFromCamp", 1, "after", function(character)
     log("TeleportedFromCamp triggered: " .. character)
-    campState[character] = nil
     refreshChain()
 end)
 
