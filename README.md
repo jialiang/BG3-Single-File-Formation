@@ -26,6 +26,11 @@ Performance impact is minimal. Operations are event-driven and batched per tick,
 
 - [BG3 Script Extender](https://github.com/Norbyte/bg3se)
 
+## Building
+
+1. Download the latest release of [LSLib](https://github.com/Norbyte/lslib/releases) and extract the contents of `ExportTool-vX.X.X.zip` into the `LSLib` folder. The build script expects `Divine.exe` to be at `LSLib\Tools\Divine.exe`.
+2. Run `Build.bat` to produce `SingleFileFormation.pak`.
+
 ## Installation
 
 1. Place `SingleFileFormation.pak` into your mods folder:
