@@ -18,7 +18,7 @@ I've tested this mod with a new game and played through Act 1 without any proble
 
 At its core, this mod uses `Osi.Follow` and `Osi.StopFollow` to manage following. While these functions sound benign, they are  fragile and were observed to produce severe side effects when mismanaged, such as: preventing characters from moving freely or taking actions, stopping them from being downed or dying even after reaching 0 HP and muting voice lines during dialogue cutscenes. These effects can become baked into save files.
 
-## Peformance
+## Performance
 
 Performance impact is minimal. Operations are event-driven and batched per tick, with each execution taking 1ms or less.
 
