@@ -31,7 +31,7 @@ local function refreshChain()
 
             local leaderRows = Osi.DB_Players:Get(Osi.GetHostCharacter())
             local leader = leaderRows and leaderRows[1] and leaderRows[1][1]
-            log(leader and ("Leader: " .. leader) or "No leader found.")
+            log(leader and ("Leader: " .. leader) or "No leader found")
 
             local isLeaderChainable = leader and isChainable(leader);
             local lastInChain = leader
@@ -67,12 +67,12 @@ local function refreshChain()
 end
 
 Ext.Osiris.RegisterListener("CombatStarted", 1, "after", function(_)
-    log("CombatStarted triggered.")
+    log("CombatStarted triggered")
     refreshChain()
 end)
 
 Ext.Osiris.RegisterListener("CombatEnded", 1, "after", function(_)
-    log("CombatEnded triggered.")
+    log("CombatEnded triggered")
     refreshChain()
 end)
 
