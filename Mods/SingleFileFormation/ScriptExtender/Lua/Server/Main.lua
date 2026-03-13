@@ -137,17 +137,17 @@ Ext.Osiris.RegisterListener("HitpointsChanged", 2, "after", function(entity, per
 end)
 
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, status, _, _)
-    if status == "DOWNED" then
-        log("StatusApplied (" .. status .. ") triggered: " .. character)
-        refreshChain()
-    end
+    if status ~= "DOWNED" then return end
+
+    log("StatusApplied (" .. status .. ") triggered: " .. character)
+    refreshChain()
 end)
 
 Ext.Osiris.RegisterListener("StatusRemoved", 4, "after", function(character, status, _, _)
-    if status == "DOWNED" then
-        log("StatusRemoved (" .. status .. ") triggered: " .. character)
-        refreshChain()
-    end
+    if status ~= "DOWNED" then return end
+
+    log("StatusRemoved (" .. status .. ") triggered: " .. character)
+    refreshChain()
 end)
 
 Ext.Osiris.RegisterListener("Resurrected", 1, "after", function(character)
@@ -156,17 +156,17 @@ Ext.Osiris.RegisterListener("Resurrected", 1, "after", function(character)
 end)
 
 Ext.Osiris.RegisterListener("DialogStarted", 2, "after", function(_, instanceID)
-    if Osi.DialogGetNumberOfInvolvedPlayers(instanceID) > 0 then
-        log("DialogStarted triggered")
-        refreshChain()
-    end
+    if Osi.DialogGetNumberOfInvolvedPlayers(instanceID) <= 0 then return end
+
+    log("DialogStarted triggered")
+    refreshChain()
 end)
 
 Ext.Osiris.RegisterListener("DialogEnded", 2, "after", function(_, instanceID)
-    if Osi.DialogGetNumberOfInvolvedPlayers(instanceID) > 0 then
-        log("DialogEnded triggered")
-        refreshChain()
-    end
+    if Osi.DialogGetNumberOfInvolvedPlayers(instanceID) <= 0 then return end
+
+    log("DialogEnded triggered")
+    refreshChain()
 end)
 
 print("[SingleFileFormation] Mod loaded.")
