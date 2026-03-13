@@ -10,6 +10,7 @@ end
 local function isChainable(member)
     if Osi.IsDead(member) == 1 then return false end
     if Osi.HasActiveStatus(member, "DOWNED") == 1 then return false end
+    if Osi.GetHitpoints(member) <= 0 then return false end
     if Osi.IsInForceTurnBasedMode(member) == 1 then return false end
     if Osi.CombatGetGuidFor(member) ~= nil then return false end
     if Osi.IsSpeakerReserved(member) == 1 then return false end
@@ -124,16 +125,11 @@ Ext.Osiris.RegisterListener("TeleportedFromCamp", 1, "after", function(character
     refreshChain()
 end)
 
-Ext.Osiris.RegisterListener("HitpointsChanged", 2, "after", function(entity, percentage)
+Ext.Osiris.RegisterListener("HitpointsChanged", 2, "after", function(entity, _)
     if Osi.IsPlayer(entity) ~= 1 then return end
 
-    if percentage > 0 then
-        log("HitpointsChanged triggered: " .. entity .. " healed.")
-        refreshChain()
-    elseif Osi.GetHitpoints(entity) <= 0 then
-        log("HitpointsChanged triggered: " .. entity .. " at 0 HP, stopping follow.")
-        Osi.StopFollow(entity)
-    end
+    log("HitpointsChanged triggered: " .. entity)
+    refreshChain()
 end)
 
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, status, _, _)
