@@ -33,8 +33,8 @@ local function refreshChain()
             local leader = leaderRows and leaderRows[1] and leaderRows[1][1]
             log(leader and ("Leader: " .. leader) or "No leader found")
 
-            local isLeaderChainable = leader and isChainable(leader);
-            local lastInChain = leader
+            local isLeaderChainable = leader and isChainable(leader)
+            local chain = {}
 
             for _, row in pairs(Osi.DB_Players:Get(nil)) do
                 local member = row[1]
@@ -45,11 +45,31 @@ local function refreshChain()
                     and isChainable(member)
                     and Osi.InSamePartyGroup(member, leader) == 1
                 then
-                    Osi.Follow(member, lastInChain)
-                    log(member .. " follows " .. lastInChain)
-                    lastInChain = member
+                    table.insert(chain, member)
                 else
                     log(member .. " not following anyone")
+                end
+            end
+
+            if #chain > 0 then
+                local distToLeader = {}
+
+                for _, member in ipairs(chain) do
+                    distToLeader[member] = Osi.GetDistanceTo(leader, member)
+                end
+
+                table.sort(chain, function(a, b)
+                    return distToLeader[a] < distToLeader[b]
+                end)
+
+                for i, member in ipairs(chain) do
+                    if i == 1 then
+                        Osi.Follow(member, leader)
+                        log(member .. " follows " .. leader)
+                    else
+                        Osi.Follow(member, chain[i - 1])
+                        log(member .. " follows " .. chain[i - 1])
+                    end
                 end
             end
 
