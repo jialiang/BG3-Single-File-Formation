@@ -1,16 +1,27 @@
-param(
-    [Parameter(Mandatory)]
-    [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')]
-    [string]$Version
-)
+param ($Version)
 
 $ErrorActionPreference = 'Stop'
 
+$DefaultVersion = '1.0.0.0'
+
+do {
+    if (-not $Version) {
+        $Version = Read-Host "Version ($DefaultVersion)"
+
+        if (-not $Version) { $Version = $DefaultVersion }
+    }
+
+    if ($Version -notmatch '^\d+\.\d+\.\d+\.\d+$') {
+        Write-Host "Invalid version format: $Version (expected X.X.X.X)"
+        $Version = $null
+    }
+} while (-not $Version)
+
 $parts = $Version.Split('.')
-$major    = [uint64]$parts[0]
-$minor    = [uint64]$parts[1]
+$major = [uint64]$parts[0]
+$minor = [uint64]$parts[1]
 $revision = [uint64]$parts[2]
-$build    = [uint64]$parts[3]
+$build = [uint64]$parts[3]
 
 $Version64 = ($major -shl 55) -bor ($minor -shl 47) -bor ($revision -shl 31) -bor $build
 Write-Host "Version: $Version -> Version64: $Version64"
