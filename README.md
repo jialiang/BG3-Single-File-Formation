@@ -29,7 +29,7 @@ Performance impact is minimal. Operations are event-driven and batched per tick,
 ## Building
 
 1. Download the latest release of [LSLib](https://github.com/Norbyte/lslib/releases) and extract the contents of `ExportTool-vX.X.X.zip` into the `LSLib` folder. The build script expects `Divine.exe` to be at `LSLib\Packed\Tools\Divine.exe`.
-2. Run `Build.bat` to produce `SingleFileFormation.pak`.
+2. Run `Build.bat` to produce `SingleFileFormation.pak`, `info.json` and `SingleFileFormation.zip` in the `Output` folder.
 
 ## Installation
 
