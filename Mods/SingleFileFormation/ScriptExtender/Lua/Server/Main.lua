@@ -157,11 +157,19 @@ Ext.Osiris.RegisterListener("CharacterLeftParty", 1, "after", function(character
 end)
 
 Ext.Osiris.RegisterListener("TeleportedToCamp", 1, "after", function(character)
+	if Osi.IsPlayer(character) ~= 1 then
+		return
+	end
+
 	log("TeleportedToCamp triggered: " .. character)
 	refreshChain()
 end)
 
 Ext.Osiris.RegisterListener("TeleportedFromCamp", 1, "after", function(character)
+	if Osi.IsPlayer(character) ~= 1 then
+		return
+	end
+
 	log("TeleportedFromCamp triggered: " .. character)
 	refreshChain()
 end)
