@@ -72,7 +72,7 @@ local function refreshChain()
 				local distToLeader = {}
 
 				for _, member in ipairs(chain) do
-					distToLeader[member] = Osi.GetDistanceTo(leader, member)
+					distToLeader[member] = Osi.GetDistanceTo(leader, member) or math.huge
 				end
 
 				table.sort(chain, function(a, b)
