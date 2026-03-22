@@ -103,6 +103,15 @@ local function refreshChain()
 	end)
 end
 
+Ext.Osiris.RegisterListener("Teleported", 9, "after", function(target, _, _, _, _, _, _, _, _)
+	if Osi.IsPlayer(target) ~= 1 then
+		return
+	end
+
+	log("Teleported triggered: " .. target)
+	refreshChain()
+end)
+
 Ext.Osiris.RegisterListener("CombatStarted", 1, "after", function(_)
 	log("CombatStarted triggered")
 	refreshChain()
