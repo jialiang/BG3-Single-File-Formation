@@ -10,7 +10,7 @@ The default triangle formation causes party members to bunch up and clip into ea
 
 - Intended for single-player only. In multiplayer, non-host players will not be able to control their characters.
 - Party members who are in turn-based mode, in combat, in cutscene dialogue, in camp, downed, dead or ungrouped are automatically removed from the chain; otherwise, they are added.
-- Does not affect attached followers, they retain their default behaviour.
+- Does not affect attached followers, they retain their default behavior.
 - Party members are chained in order of their distance to the leader, closest first.
 - Works fine with any party sizes, even those larger than 4.
 
