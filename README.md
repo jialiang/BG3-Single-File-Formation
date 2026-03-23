@@ -1,5 +1,7 @@
 # Single File Formation Mod for Baldur's Gate 3
 
+![Preview screenshot](https://github.com/jialiang/BG3-Single-File-Formation/blob/master/preview.png?raw=true)
+
 Makes your companions follow each other in a chain, so that the whole group walks in a single file behind the character you control.
 
 The default triangle formation causes party members to bunch up and clip into each other when moving through tight spaces or while waiting to climb.
