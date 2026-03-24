@@ -1,12 +1,11 @@
 local MOD_UUID = "b5ac59e5-35c7-49c4-8ef9-ce697e7893cf"
 
-local isDebugMode = true
 local isQueued = false
 local isLeaderMoving = true
 local lastLeaderPos = { nil, nil, nil }
 
 local function log(msg)
-	if isDebugMode then
+	if not MCM or MCM.Get("debug_logging", MOD_UUID) then
 		print("[SingleFileFormation] " .. msg)
 	end
 end

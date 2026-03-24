@@ -13,6 +13,13 @@
           "Type": "checkbox",
           "Default": true,
           "Description": "At rest, the party huddles together instead of remaining in single file."
+        },
+        {
+          "Id": "debug_logging",
+          "Name": "Debug Logging",
+          "Type": "checkbox",
+          "Default": true,
+          "Description": "Print debug logs to the script extender console."
         }
       ]
     }
