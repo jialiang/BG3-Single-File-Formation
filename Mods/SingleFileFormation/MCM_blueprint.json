@@ -8,6 +8,13 @@
       "TabId": "settings",
       "Settings": [
         {
+          "Id": "enabled",
+          "Name": "Enabled",
+          "Type": "checkbox",
+          "Default": true,
+          "Description": "Enable or disable the Single File Formation mod."
+        },
+        {
           "Id": "huddle_at_rest",
           "Name": "Huddle At Rest",
           "Type": "checkbox",

@@ -52,6 +52,7 @@ local function refreshChain()
 			local leader = leaderRows and leaderRows[1] and leaderRows[1][1]
 			log(leader and ("Leader: " .. leader) or "No leader found")
 
+			local isModEnabled = MCM == nil or MCM.Get("enabled", MOD_UUID)
 			local isLeaderChainable = leader and isChainable(leader)
 			local isHuddleAtRestEnabled = MCM == nil or MCM.Get("huddle_at_rest", MOD_UUID)
 			local shouldHuddle = isHuddleAtRestEnabled and not isLeaderMoving
@@ -62,7 +63,8 @@ local function refreshChain()
 				Osi.StopFollow(member)
 
 				if
-					isLeaderChainable
+					isModEnabled
+					and isLeaderChainable
 					and not shouldHuddle
 					and member ~= leader
 					and isChainable(member)
@@ -272,6 +274,11 @@ if Ext.ModEvents.BG3MCM then
 	Ext.ModEvents.BG3MCM["MCM_Setting_Saved"]:Subscribe(function(payload)
 		if not payload or payload.modUUID ~= MOD_UUID then
 			return
+		end
+
+		if payload.settingId == "enabled" then
+			log("Enabled Setting changed to " .. tostring(payload.value))
+			refreshChain()
 		end
 
 		if payload.settingId == "huddle_at_rest" then
