@@ -27,6 +27,7 @@ Performance impact is minimal. Operations are event-driven and batched per tick,
 ## Requirements
 
 - [BG3 Script Extender](https://github.com/Norbyte/bg3se)
+- [BG3 Mod Configuration Menu](https://github.com/AtilioA/BG3-MCM) (optional, for in-game settings)
 
 ## Building
 

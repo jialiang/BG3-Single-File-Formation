@@ -1,6 +1,3 @@
 {
-    "Lua.diagnostics.globals": [
-        "Osi",
-        "Ext"
-    ]
+  "Lua.diagnostics.globals": ["Osi", "Ext", "MCM"]
 }

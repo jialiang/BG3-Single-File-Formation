@@ -1,5 +1,9 @@
+local MOD_UUID = "b5ac59e5-35c7-49c4-8ef9-ce697e7893cf"
+
 local isDebugMode = true
 local isQueued = false
+local isLeaderMoving = true
+local lastLeaderPos = { nil, nil, nil }
 
 local function log(msg)
 	if isDebugMode then
@@ -50,6 +54,8 @@ local function refreshChain()
 			log(leader and ("Leader: " .. leader) or "No leader found")
 
 			local isLeaderChainable = leader and isChainable(leader)
+			local isHuddleAtRestEnabled = MCM == nil or MCM.Get("huddle_at_rest", MOD_UUID)
+			local shouldHuddle = isHuddleAtRestEnabled and not isLeaderMoving
 			local chain = {}
 
 			for _, row in pairs(Osi.DB_Players:Get(nil)) do
@@ -58,6 +64,7 @@ local function refreshChain()
 
 				if
 					isLeaderChainable
+					and not shouldHuddle
 					and member ~= leader
 					and isChainable(member)
 					and Osi.InSamePartyGroup(member, leader) == 1
@@ -152,6 +159,10 @@ end)
 
 Ext.Osiris.RegisterListener("GainedControl", 1, "after", function(character)
 	log("GainedControl triggered: " .. character)
+
+	isLeaderMoving = true
+	lastLeaderPos = { nil, nil, nil }
+
 	refreshChain()
 end)
 
@@ -232,5 +243,43 @@ Ext.Osiris.RegisterListener("DialogEnded", 2, "after", function(_, instanceID)
 	log("DialogEnded triggered")
 	refreshChain()
 end)
+
+Ext.Timer.WaitFor(250, function()
+	if not Osi.DB_Players then
+		return
+	end
+
+	local leaderRows = Osi.DB_Players:Get(Osi.GetHostCharacter())
+	local leader = leaderRows and leaderRows[1] and leaderRows[1][1]
+
+	if not leader then
+		return
+	end
+
+	local x0, y0, z0 = lastLeaderPos[1], lastLeaderPos[2], lastLeaderPos[3]
+	local x1, y1, z1 = Osi.GetPosition(leader)
+	local newIsLeaderMoving = x0 ~= x1 or y0 ~= y1 or z0 ~= z1
+
+	lastLeaderPos = { x1, y1, z1 }
+
+	if newIsLeaderMoving ~= isLeaderMoving then
+		isLeaderMoving = newIsLeaderMoving
+		log(leader .. (isLeaderMoving and " is now moving" or " has stopped moving"))
+		refreshChain()
+	end
+end, 500)
+
+if Ext.ModEvents.BG3MCM then
+	Ext.ModEvents.BG3MCM["MCM_Setting_Saved"]:Subscribe(function(payload)
+		if not payload or payload.modUUID ~= MOD_UUID then
+			return
+		end
+
+		if payload.settingId == "huddle_at_rest" then
+			log("Huddle At Rest Setting changed to " .. tostring(payload.value))
+			refreshChain()
+		end
+	end)
+end
 
 print("[SingleFileFormation] Mod loaded.")

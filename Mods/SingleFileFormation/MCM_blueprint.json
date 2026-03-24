@@ -1,0 +1,20 @@
+{
+  "SchemaVersion": 1,
+  "Optional": true,
+  "ModName": "Single File Formation",
+  "Tabs": [
+    {
+      "TabName": "Settings",
+      "TabId": "settings",
+      "Settings": [
+        {
+          "Id": "huddle_at_rest",
+          "Name": "Huddle At Rest",
+          "Type": "checkbox",
+          "Default": true,
+          "Description": "At rest, the party huddles together instead of remaining in single file."
+        }
+      ]
+    }
+  ]
+}
