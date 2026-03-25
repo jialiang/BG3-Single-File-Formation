@@ -2,7 +2,7 @@ param ($Version)
 
 $ErrorActionPreference = 'Stop'
 
-$DefaultVersion = '1.0.0.0'
+$DefaultVersion = '1.1.0.0'
 
 do {
     if (-not $Version) {
