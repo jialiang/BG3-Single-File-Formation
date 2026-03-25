@@ -38,6 +38,18 @@ local function isChainable(member)
 	return true
 end
 
+local function isAnyoneClimbing()
+	for _, row in pairs(Osi.DB_Players:Get(nil)) do
+		local member = row[1]
+
+		if Osi.HasActiveStatus(member, "CLIMBING") == 1 then
+			return true
+		end
+	end
+
+	return false
+end
+
 local function refreshChain()
 	if isQueued then
 		return
@@ -55,7 +67,7 @@ local function refreshChain()
 			local isModEnabled = MCM == nil or MCM.Get("enabled", MOD_UUID)
 			local isLeaderChainable = leader and isChainable(leader)
 			local isHuddleAtRestEnabled = MCM == nil or MCM.Get("huddle_at_rest", MOD_UUID)
-			local shouldHuddle = isHuddleAtRestEnabled and not isLeaderMoving
+			local shouldHuddle = isHuddleAtRestEnabled and not isLeaderMoving and not isAnyoneClimbing()
 			local chain = {}
 
 			for _, row in pairs(Osi.DB_Players:Get(nil)) do
@@ -205,7 +217,7 @@ Ext.Osiris.RegisterListener("HitpointsChanged", 2, "after", function(entity, _)
 end)
 
 Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, status, _, _)
-	if status ~= "DOWNED" then
+	if status ~= "DOWNED" and status ~= "CLIMBING" then
 		return
 	end
 
@@ -214,7 +226,7 @@ Ext.Osiris.RegisterListener("StatusApplied", 4, "after", function(character, sta
 end)
 
 Ext.Osiris.RegisterListener("StatusRemoved", 4, "after", function(character, status, _, _)
-	if status ~= "DOWNED" then
+	if status ~= "DOWNED" and status ~= "CLIMBING" then
 		return
 	end
 
@@ -245,7 +257,7 @@ Ext.Osiris.RegisterListener("DialogEnded", 2, "after", function(_, instanceID)
 	refreshChain()
 end)
 
-Ext.Timer.WaitFor(250, function()
+Ext.Timer.WaitFor(200, function()
 	if not Osi.DB_Players then
 		return
 	end
